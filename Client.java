@@ -3,9 +3,9 @@ import java.util.Arrays;
 
 public class Client {
     private static ArrayList<ArrayList<Integer>> maze = new ArrayList<>(Arrays.asList(
-        new ArrayList<>(Arrays.asList(9, 0, 0, 1, 0, 0, 8, 0)),
+        new ArrayList<>(Arrays.asList(9, 1, 1, 1, 0, 0, 8, 0)),
         new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0, 0, 0, 0)),
-        new ArrayList<>(Arrays.asList(1, 1, 1, 1, 0, 0, 1, 0)),
+        new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0, 0, 1, 0)),
         new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0, 0, 0, 0)),
         new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0, 0, 0, 0)),
         new ArrayList<>(Arrays.asList(0, 0, 0, 1, 1, 1, 1, 1)),
