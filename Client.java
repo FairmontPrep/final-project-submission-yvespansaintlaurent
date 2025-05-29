@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class Client {
     private static ArrayList<ArrayList<Integer>> maze = new ArrayList<>(Arrays.asList(
-        new ArrayList<>(Arrays.asList(9, 1, 1, 1, 0, 0, 8, 0)),
+        new ArrayList<>(Arrays.asList(0, 1, 1, 1, 0, 0, 8, 0)),
         new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0, 0, 0, 0)),
         new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0, 0, 1, 0)),
         new ArrayList<>(Arrays.asList(0, 0, 0, 1, 0, 0, 0, 0)),
@@ -20,26 +20,47 @@ public class Client {
     private static boolean[][] visited1 = new boolean[rows][cols];
     private static boolean[][] visited2 = new boolean[rows][cols];
     private static boolean foundSecondPath = false;
+    private static ArrayList<String> path3 = new ArrayList<>();
+    private static boolean[][] visited3 = new boolean[rows][cols];
+    private static boolean foundThirdPath = false;
+
 
     public static void main(String[] args) {
-        // First path from [0][1] to [5][7]
-        dfsLShaped(0, 1);
+    // First path from [0][1] to [5][7]
+    dfsLShaped(0, 1);
 
-        // Second path from left wall to top wall
-        for (int r = 0; r < rows; r++) {
-            if (maze.get(r).get(0) == 1 && !foundSecondPath) {
-                dfsWallToTop(r, 0);
-            }
+    // Try from left wall
+    for (int r = 0; r < rows; r++) {
+        if (maze.get(r).get(0) == 1 && !foundSecondPath) {
+            dfsWallToTop(r, 0);
         }
-
-        // Print full path
-        printPath(path1, path2);
-
-        System.out.println("\nL-shaped Path coordinates:");
-        System.out.println(path1);
-        System.out.println("\nLeft-to-Top Path coordinates:");
-        System.out.println(path2);
     }
+
+    // Try from right wall
+    for (int r = 0; r < rows; r++) {
+        if (maze.get(r).get(cols - 1) == 1 && !foundSecondPath) {
+            dfsWallToTop(r, cols - 1);
+        }
+    }
+
+     
+     for (int c = 0; c < cols; c++) {
+         if (maze.get(rows - 1).get(c) == 1 && !foundThirdPath) {
+             dfsWallToTop(rows - 1, c);
+         }
+     }
+
+    // Print full path
+    printPath(path1, path2, path3);
+
+    System.out.println("\nL-shaped Path coordinates:");
+    System.out.println(path1);
+    System.out.println("\nWall-to-Top Path coordinates:");
+    System.out.println(path2);
+    System.out.println("\nBottom-to-Top Path coordinates:");
+    System.out.println(path3);
+}
+
 
     private static void dfsLShaped(int r, int c) {
         if (r < 0 || c < 0 || r >= rows || c >= cols || visited1[r][c] || maze.get(r).get(c) != 1) return;
@@ -80,7 +101,31 @@ public class Client {
         }
     }
 
-    private static void printPath(ArrayList<String> path1, ArrayList<String> path2) {
+    private static void dfsBottomToSide(int r, int c) {
+    if (r < 0 || c < 0 || r >= rows || c >= cols || visited3[r][c] || visited3[r][c] || maze.get(r).get(c) != 1 || foundSecondPath)
+        return;
+
+    visited3[r][c] = true;
+    path3.add("A[" + r + "][" + c + "]");
+
+    if (c == 0 || c == cols - 1) {  // Reached left or right wall
+        foundThirdPath = true;
+        return;
+    }
+
+    // Explore all directions
+    dfsBottomToSide(r + 1, c);
+    dfsBottomToSide(r - 1, c);
+    dfsBottomToSide(r, c + 1);
+    dfsBottomToSide(r, c - 1);
+
+    if (!foundThirdPath) {
+        path3.remove(path3.size() - 1); // Backtrack
+    }
+}
+
+
+    private static void printPath(ArrayList<String> path1, ArrayList<String> path2, ArrayList<String> path3) {
     String[][] displayGrid = new String[rows][cols];
 
     // Initialize all to blank
