@@ -41,7 +41,6 @@ public class Client {
         // Try bottom-to-side path
         for (int c = 0; c < cols; c++) {
             if (maze.get(rows - 1).get(c) == 1 && !foundThirdPath) {
-                System.out.println("Starting Bottom-to-Side DFS at: " + (rows - 1) + "," + c);
                 dfsBottomToSide(rows - 1, c);
             }
         }
